@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jogo da Forca</title>
+</head>
+<body>
+    <h1>Jogo da Forca</h1>
+    <p>Adivinhe a palavra secreta:</p>
+    <p id="palavra-secreta"></p>
+    <p id="tentativas-restantes"></p>
+    <input type="text" id="palpite" placeholder="Digite uma letra">
+    <button onclick="adivinharLetra()">Adivinhar</button>
+    <p id="mensagem"></p>
+    <link reel="href" stylesheet="">
+
+    <script>
+        const palavras = ["javascript", "programacao", "computador", "desenvolvimento", "html", "css", "algoritmo"];
+        const palavraSecreta = palavras[Math.floor(Math.random() * palavras.length)];
+        const palavraAdivinhada = Array(palavraSecreta.length).fill("_");
+        let tentativasRestantes = 6;
+
+        document.getElementById("palavra-secreta").textContent = palavraAdivinhada.join(" ");
+        document.getElementById("tentativas-restantes").textContent = `Tentativas Restantes: ${tentativasRestantes}`;
+
+        function adivinharLetra() {
+            const palpite = document.getElementById("palpite").value.toLowerCase();
+
+            if (palpite.length !== 1) {
+                document.getElementById("mensagem").textContent = "Por favor, digite apenas uma letra.";
+                return;
+            }
+
+            if (!palavraSecreta.includes(palpite)) {
+                tentativasRestantes--;
+                document.getElementById("tentativas-restantes").textContent = `Tentativas Restantes: ${tentativasRestantes}`;
+            }
+
+            for (let i = 0; i < palavraSecreta.length; i++) {
+                if (palavraSecreta[i] === palpite) {
+                    palavraAdivinhada[i] = palpite;
+                }
+            }
+
+            document.getElementById("palavra-secreta").textContent = palavraAdivinhada.join(" ");
+            document.getElementById("mensagem").textContent = "";
+
+            if (palavraAdivinhada.join("") === palavraSecreta) {
+                document.getElementById("mensagem").textContent = "Parabéns! Você adivinhou a palavra secreta!";
+            }
+
+            if (tentativasRestantes === 0) {
+                document.getElementById("mensagem").textContent = `Você perdeu! A palavra secreta era "${palavraSecreta}".`;
+                document.getElementById("palpite").disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>
